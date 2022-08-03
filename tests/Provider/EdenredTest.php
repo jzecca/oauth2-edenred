@@ -3,6 +3,7 @@
 namespace Jzecca\OAuth2\Client\Test\Provider;
 
 use Eloquent\Phony\Phpunit\Phony;
+use GuzzleHttp\Psr7\Utils;
 use Jzecca\OAuth2\Client\Provider\Edenred;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
@@ -63,7 +64,7 @@ class EdenredTest extends TestCase
 
         $response = Phony::mock('GuzzleHttp\Psr7\Response');
         $response->getHeader->returns(['application/json']);
-        $response->getBody->returns($userJson);
+        $response->getBody->returns(Utils::streamFor($userJson));
 
         $provider = Phony::partialMock(Edenred::class);
         $provider->getResponse->returns($response);
@@ -95,7 +96,7 @@ class EdenredTest extends TestCase
 
         $response = Phony::mock('GuzzleHttp\Psr7\Response');
         $response->getHeader->returns(['application/json']);
-        $response->getBody->returns($errorJson);
+        $response->getBody->returns(Utils::streamFor($errorJson));
 
         $provider = Phony::partialMock(Edenred::class);
         $provider->getResponse->returns($response);
